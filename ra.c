@@ -11,7 +11,7 @@ size_t random_attack(graph_t* graph, node_t* seq[]) {
 
     i = 0;
     node_t** nb;
-    while (m && n) {
+    while (m && i<n) {
         j = rand() % (n-i) + i;
         u = seq[i];
         if (i!=j) {
@@ -21,8 +21,8 @@ size_t random_attack(graph_t* graph, node_t* seq[]) {
         nb = u->neighbors;
         j = u->k;
         while (j--) nb[j]->k--;
+        u->size = 0;
         i++;
-        n--;
         m-=u->k;
     }
     return i;
