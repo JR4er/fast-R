@@ -38,11 +38,9 @@ size_t high_degree_adaptive(graph_t* g, node_t* seq[]) {
     node_t **nb, *v;
 
     while (--n) while (( u=pop(&seq[n]) )){
-        node_tidy_neighbor(u);
         nb = u->neighbors;
-        i = u->k;
-        while (i--) {
-            v = nb[i];
+        i = u->n;
+        while (i--) if ((v=nb[i])->size){
             pop(v->ref);
             push(&seq[--v->k], v);
         }

@@ -24,6 +24,5 @@ typedef struct {
 
 graph_t* graph_read_csv(const char* filename);
 void     graph_free(graph_t* graph);
-void     node_tidy_neighbor(node_t* node);
 
 #endif

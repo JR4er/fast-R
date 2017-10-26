@@ -51,25 +51,3 @@ void graph_free(graph_t* g) {
     free(g->v[0].neighbors);
     free(g);
 }
-
-static
-void tidy(node_t* nb[], size_t n, size_t k) {
-    if (n==k || k==0) return;
-    node_t* x = nb[0];
-    if (x->size) k--;
-    size_t i = 0, j = k;
-    while (1) {
-        while (j<n && !nb[j]->size) j++;
-        if (j==n) break;
-        nb[i++] = nb[j];
-        while (i<k && nb[i]->size) i++;
-        if (i==k) break;
-        nb[j++] = nb[i];
-    }
-    nb[k] = x;
-}
-
-
-void node_tidy_neighbor(node_t* n) {
-    tidy(n->neighbors, n->n, n->k);
-}

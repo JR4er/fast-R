@@ -61,9 +61,7 @@ void flood(node_t* seed, node_t* comm, node_t* queue[]) {
         u = queue[l++];
         i = u->n;
         nb = u->neighbors;
-        while (i--) {
-            v = nb[i];
-            if (v->root == NULL) continue;
+        while (i--) if ((v=nb[i])->size) {
             if (v->root == comm) continue;
             v->root = comm;
             queue[h++] = v;
@@ -75,7 +73,9 @@ void flood(node_t* seed, node_t* comm, node_t* queue[]) {
 static inline
 node_t* new_seed(node_t* v, node_t* old) {
     if (v != old) return v;;
-    return v->k == 0 ? v : v->neighbors[0];
+    size_t i = v->n;
+    while (i--) if (v->neighbors[i]->size) return v->neighbors[i];
+    return v;
 }
 
 double robustness(node_t* seq[], size_t n, size_t N) {
@@ -86,7 +86,8 @@ double robustness(node_t* seq[], size_t n, size_t N) {
     size_t i, j;
 
     size_t R = N - n - 1;
-
+    for (i=0; i!=n; ++i) seq[i]->size = 1;
+    
     for (i=0; i!=n; ++i) if (seq[i]->root == seq[i]) {
         flood(seq[i], seq[i], queue);
         heap_push(heap, &heap_size, seq[i]);
@@ -97,11 +98,11 @@ double robustness(node_t* seq[], size_t n, size_t N) {
         u = seq[i];
         old = u->root;
         heap_delete(heap, &heap_size, old);
-        u->root = NULL;
         nb = u->neighbors;
-        j = u->k;
-        while (j--) {
-            if ((v = nb[j])->root != old) continue;
+        j = u->n;
+        u->size = 0;
+        while (j--) if ((v=nb[j])->size){
+            if (v->root != old) continue;
             new = new_seed(v, old);
             flood(v, new, queue);
             heap_push(heap, &heap_size, new);

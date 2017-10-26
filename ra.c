@@ -17,10 +17,9 @@ size_t random_attack(graph_t* graph, node_t* seq[]) {
         if (i!=j) {
             u = seq[j]; seq[j] = seq[i]; seq[i] = u;
         } 
-        node_tidy_neighbor(u);
         nb = u->neighbors;
-        j = u->k;
-        while (j--) nb[j]->k--;
+        j = u->n;
+        while (j--) if (nb[j]->size) nb[j]->k--;
         u->size = 0;
         i++;
         m-=u->k;

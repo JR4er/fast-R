@@ -32,8 +32,8 @@ double robustness(node_t* seq[], size_t n, size_t N) {
         u = seq[n];
         csba = u->size = 1;
         nb = u->neighbors;
-        i = u->k;
-        while (i--) {
+        i = u->n;
+        while (i--) if (nb[i]->size) {
             csba = union_set(u, nb[i]);
         }
         if (csba > max_csba) max_csba = csba;
