@@ -1,6 +1,10 @@
 # macOS
 .DS_Store
 
+# exec
+fast
+slow
+
 # Benchmarks
 *.csv
 
