@@ -4,7 +4,7 @@ import networkx as nx
 
 random.seed(0)
 
-n = [100, 500, 1000]
+n = [100, 500, 1000, 5000]
 k = 5
 
 for i in n:
