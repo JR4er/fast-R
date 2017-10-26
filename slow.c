@@ -30,7 +30,10 @@ void heap_maxify(node_t* heap[], size_t n, unsigned i) {
 static
 void heap_popup(node_t* heap[], unsigned i, node_t* n) {
     unsigned p;
-    while (i && heap[p=(i-1)>>1]->size < n->size) i = p;
+    while (i && heap[p=(i-1)>>1]->size < n->size) {
+        heap_set(heap, i, heap[p]);
+        i = p;
+    }
     heap_set(heap, i, n);
 }
 
@@ -56,9 +59,12 @@ void flood(node_t* seed, node_t* comm, node_t* queue[]) {
     size_t i;
     while (l<h) {
         u = queue[l++];
-        i = u->k;
+        i = u->n;
         nb = u->neighbors;
-        while (i--) if ((v=nb[i])->root != comm) {
+        while (i--) {
+            v = nb[i];
+            if (v->root == NULL) continue;
+            if (v->root == comm) continue;
             v->root = comm;
             queue[h++] = v;
         }
@@ -91,6 +97,7 @@ double robustness(node_t* seq[], size_t n, size_t N) {
         u = seq[i];
         old = u->root;
         heap_delete(heap, &heap_size, old);
+        u->root = NULL;
         nb = u->neighbors;
         j = u->k;
         while (j--) {
