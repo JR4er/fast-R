@@ -7,7 +7,11 @@ slow
 
 # Benchmarks
 *.csv
-*.png
+*.dat
+
+#figures
+*.mp
+*.mpx
 
 # Prerequisites
 *.d
